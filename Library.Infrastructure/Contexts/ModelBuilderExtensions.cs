@@ -1,10 +1,5 @@
 ﻿using Library.Model.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Library.Infrastructure.Contexts
 {
@@ -26,7 +21,7 @@ namespace Library.Infrastructure.Contexts
             modelBuilder.Entity<Insurance>().HasData(
                 new Insurance
                 {
-                    Id= 1,
+                    Id = 1,
                     InsuranceTypeId = 1,
                     PersonId = 1,
                     StartDate = "14010509",
@@ -38,10 +33,10 @@ namespace Library.Infrastructure.Contexts
                 new InsuranceType() { Id = 2, Name = "سلامت" }
                 );
 
-            modelBuilder.Entity<MedicineType>().HasData(
-                new MedicineType { Id = 1, Name = "استامینوفن" },
-                new MedicineType { Id = 2, Name = "ژلوفن" },
-                new MedicineType { Id = 3, Name = "پروفن" }
+            modelBuilder.Entity<Medicine>().HasData(
+                new Medicine { Id = 1, Name = "استامینوفن" },
+                new Medicine { Id = 2, Name = "ژلوفن" },
+                new Medicine { Id = 3, Name = "پروفن" }
                 );
 
             modelBuilder.Entity<RadiologyType>().HasData(

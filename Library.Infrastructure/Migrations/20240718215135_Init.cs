@@ -4,47 +4,12 @@
 
 namespace Library.Infrastructure.Migrations
 {
-    public partial class tesst5 : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropIndex(
-                name: "IX_Insurance_InsuranceTypeId",
-                table: "Insurance");
-
-            migrationBuilder.AlterColumn<string>(
-                name: "Name",
-                table: "InsuranceType",
-                type: "nvarchar(max)",
-                nullable: true,
-                oldClrType: typeof(string),
-                oldType: "nvarchar(max)");
-
-            migrationBuilder.AlterColumn<string>(
-                name: "StartDate",
-                table: "Insurance",
-                type: "nvarchar(max)",
-                nullable: true,
-                oldClrType: typeof(string),
-                oldType: "nvarchar(max)");
-
-            migrationBuilder.AlterColumn<string>(
-                name: "ExpireDate",
-                table: "Insurance",
-                type: "nvarchar(max)",
-                nullable: true,
-                oldClrType: typeof(string),
-                oldType: "nvarchar(max)");
-
-            migrationBuilder.AddColumn<int>(
-                name: "PersonId",
-                table: "Insurance",
-                type: "int",
-                nullable: false,
-                defaultValue: 0);
-
             migrationBuilder.CreateTable(
-                name: "Dr",
+                name: "Doctor",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -54,11 +19,24 @@ namespace Library.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Dr", x => x.Id);
+                    table.PrimaryKey("PK_Doctor", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "LabratoryType",
+                name: "InsuranceType",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_InsuranceType", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "LaboratoryType",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -68,11 +46,11 @@ namespace Library.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_LabratoryType", x => x.Id);
+                    table.PrimaryKey("PK_LaboratoryType", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "MedicineType",
+                name: "Medicine",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -82,7 +60,7 @@ namespace Library.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MedicineType", x => x.Id);
+                    table.PrimaryKey("PK_Medicine", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -117,6 +95,49 @@ namespace Library.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "User",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PassWord = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_User", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Insurance",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ExpireDate = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    StartDate = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    InsuranceTypeId = table.Column<int>(type: "int", nullable: false),
+                    PersonId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Insurance", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Insurance_InsuranceType_InsuranceTypeId",
+                        column: x => x.InsuranceTypeId,
+                        principalTable: "InsuranceType",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Insurance_Person_PersonId",
+                        column: x => x.PersonId,
+                        principalTable: "Person",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Prescription",
                 columns: table => new
                 {
@@ -129,9 +150,9 @@ namespace Library.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_Prescription", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Prescription_Dr_DrId",
+                        name: "FK_Prescription_Doctor_DrId",
                         column: x => x.DrId,
-                        principalTable: "Dr",
+                        principalTable: "Doctor",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -143,25 +164,43 @@ namespace Library.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Labratory",
+                name: "LoginAccess",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false),
+                    UserType = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LoginAccess", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_LoginAccess_User_Id",
+                        column: x => x.Id,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Laboratory",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     PrescriptionId = table.Column<int>(type: "int", nullable: false),
-                    LabratoryTypeId = table.Column<int>(type: "int", nullable: false)
+                    LaboratoryTypeId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Labratory", x => x.Id);
+                    table.PrimaryKey("PK_Laboratory", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Labratory_LabratoryType_LabratoryTypeId",
-                        column: x => x.LabratoryTypeId,
-                        principalTable: "LabratoryType",
+                        name: "FK_Laboratory_LaboratoryType_LaboratoryTypeId",
+                        column: x => x.LaboratoryTypeId,
+                        principalTable: "LaboratoryType",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Labratory_Prescription_PrescriptionId",
+                        name: "FK_Laboratory_Prescription_PrescriptionId",
                         column: x => x.PrescriptionId,
                         principalTable: "Prescription",
                         principalColumn: "Id",
@@ -169,7 +208,7 @@ namespace Library.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Medicine",
+                name: "PrescriptionMedicine",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -179,15 +218,15 @@ namespace Library.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Medicine", x => x.Id);
+                    table.PrimaryKey("PK_PrescriptionMedicine", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Medicine_MedicineType_MedicineTypeId",
+                        name: "FK_PrescriptionMedicine_Medicine_MedicineTypeId",
                         column: x => x.MedicineTypeId,
-                        principalTable: "MedicineType",
+                        principalTable: "Medicine",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Medicine_Prescription_PrescriptionId",
+                        name: "FK_PrescriptionMedicine_Prescription_PrescriptionId",
                         column: x => x.PrescriptionId,
                         principalTable: "Prescription",
                         principalColumn: "Id",
@@ -220,6 +259,45 @@ namespace Library.Infrastructure.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.InsertData(
+                table: "InsuranceType",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "تامین اجتماعی" },
+                    { 2, "سلامت" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Medicine",
+                columns: new[] { "Id", "Name", "Price" },
+                values: new object[,]
+                {
+                    { 1, "استامینوفن", 0L },
+                    { 2, "ژلوفن", 0L },
+                    { 3, "پروفن", 0L }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Person",
+                columns: new[] { "Id", "DateOfBirth", "Family", "FatherName", "Name", "NationalId" },
+                values: new object[] { 1, "13780624", "احدزاده", "عادل", "علی", "0312020244" });
+
+            migrationBuilder.InsertData(
+                table: "RadiologyType",
+                columns: new[] { "Id", "Name", "Price" },
+                values: new object[,]
+                {
+                    { 1, "استخوان", 0L },
+                    { 2, "اعضای داخلی", 0L },
+                    { 3, "غضروف", 0L }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Insurance",
+                columns: new[] { "Id", "ExpireDate", "InsuranceTypeId", "PersonId", "StartDate" },
+                values: new object[] { 1, "14020509", 1, 1, "14010509" });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Insurance_InsuranceTypeId",
                 table: "Insurance",
@@ -232,23 +310,13 @@ namespace Library.Infrastructure.Migrations
                 column: "PersonId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Labratory_LabratoryTypeId",
-                table: "Labratory",
-                column: "LabratoryTypeId");
+                name: "IX_Laboratory_LaboratoryTypeId",
+                table: "Laboratory",
+                column: "LaboratoryTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Labratory_PrescriptionId",
-                table: "Labratory",
-                column: "PrescriptionId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Medicine_MedicineTypeId",
-                table: "Medicine",
-                column: "MedicineTypeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Medicine_PrescriptionId",
-                table: "Medicine",
+                name: "IX_Laboratory_PrescriptionId",
+                table: "Laboratory",
                 column: "PrescriptionId");
 
             migrationBuilder.CreateIndex(
@@ -262,6 +330,16 @@ namespace Library.Infrastructure.Migrations
                 column: "PersonId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_PrescriptionMedicine_MedicineTypeId",
+                table: "PrescriptionMedicine",
+                column: "MedicineTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PrescriptionMedicine_PrescriptionId",
+                table: "PrescriptionMedicine",
+                column: "PrescriptionId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Radiology_PrescriptionId",
                 table: "Radiology",
                 column: "PrescriptionId");
@@ -270,36 +348,36 @@ namespace Library.Infrastructure.Migrations
                 name: "IX_Radiology_RadiologyTypeId",
                 table: "Radiology",
                 column: "RadiologyTypeId");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Insurance_Person_PersonId",
-                table: "Insurance",
-                column: "PersonId",
-                principalTable: "Person",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Insurance_Person_PersonId",
-                table: "Insurance");
+            migrationBuilder.DropTable(
+                name: "Insurance");
 
             migrationBuilder.DropTable(
-                name: "Labratory");
+                name: "Laboratory");
 
             migrationBuilder.DropTable(
-                name: "Medicine");
+                name: "LoginAccess");
+
+            migrationBuilder.DropTable(
+                name: "PrescriptionMedicine");
 
             migrationBuilder.DropTable(
                 name: "Radiology");
 
             migrationBuilder.DropTable(
-                name: "LabratoryType");
+                name: "InsuranceType");
 
             migrationBuilder.DropTable(
-                name: "MedicineType");
+                name: "LaboratoryType");
+
+            migrationBuilder.DropTable(
+                name: "User");
+
+            migrationBuilder.DropTable(
+                name: "Medicine");
 
             migrationBuilder.DropTable(
                 name: "Prescription");
@@ -308,57 +386,10 @@ namespace Library.Infrastructure.Migrations
                 name: "RadiologyType");
 
             migrationBuilder.DropTable(
-                name: "Dr");
+                name: "Doctor");
 
             migrationBuilder.DropTable(
                 name: "Person");
-
-            migrationBuilder.DropIndex(
-                name: "IX_Insurance_InsuranceTypeId",
-                table: "Insurance");
-
-            migrationBuilder.DropIndex(
-                name: "IX_Insurance_PersonId",
-                table: "Insurance");
-
-            migrationBuilder.DropColumn(
-                name: "PersonId",
-                table: "Insurance");
-
-            migrationBuilder.AlterColumn<string>(
-                name: "Name",
-                table: "InsuranceType",
-                type: "nvarchar(max)",
-                nullable: false,
-                defaultValue: "",
-                oldClrType: typeof(string),
-                oldType: "nvarchar(max)",
-                oldNullable: true);
-
-            migrationBuilder.AlterColumn<string>(
-                name: "StartDate",
-                table: "Insurance",
-                type: "nvarchar(max)",
-                nullable: false,
-                defaultValue: "",
-                oldClrType: typeof(string),
-                oldType: "nvarchar(max)",
-                oldNullable: true);
-
-            migrationBuilder.AlterColumn<string>(
-                name: "ExpireDate",
-                table: "Insurance",
-                type: "nvarchar(max)",
-                nullable: false,
-                defaultValue: "",
-                oldClrType: typeof(string),
-                oldType: "nvarchar(max)",
-                oldNullable: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Insurance_InsuranceTypeId",
-                table: "Insurance",
-                column: "InsuranceTypeId");
         }
     }
 }

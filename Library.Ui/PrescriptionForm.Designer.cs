@@ -1,6 +1,6 @@
 ﻿namespace Library.Ui
 {
-    partial class DrForm
+    partial class PrescriptionForm
     {
         /// <summary>
         /// Required designer variable.
@@ -94,7 +94,7 @@
             searchByNationalCode.TabIndex = 2;
             searchByNationalCode.Text = "جست و جو";
             searchByNationalCode.UseVisualStyleBackColor = true;
-            searchByNationalCode.Click += searchByNationalCode_Click;
+            searchByNationalCode.Click += SearchByNationalCode;
             // 
             // nationalCodeTxt2
             // 
@@ -283,7 +283,7 @@
             addMedicnebtnToGw.TabIndex = 8;
             addMedicnebtnToGw.Text = "Add";
             addMedicnebtnToGw.UseVisualStyleBackColor = true;
-            addMedicnebtnToGw.Click += addMedicnebtnToGw_Click;
+            addMedicnebtnToGw.Click += AddMedicineToGw;
             // 
             // comboMedicine
             // 
@@ -301,7 +301,7 @@
             addMedicineBtn.TabIndex = 5;
             addMedicineBtn.Text = "ثبت نسخه";
             addMedicineBtn.UseVisualStyleBackColor = true;
-            addMedicineBtn.Click += addMedicineBtn_Click;
+            addMedicineBtn.Click += AddMedicineBtn_Click;
             // 
             // tabPageRadiology
             // 
@@ -335,7 +335,7 @@
             addRadiologyToGv.TabIndex = 12;
             addRadiologyToGv.Text = "Add";
             addRadiologyToGv.UseVisualStyleBackColor = true;
-            addRadiologyToGv.Click += addRadiologyToGv_Click;
+            addRadiologyToGv.Click += AddRadiologyToGv_Click;
             // 
             // comboRadiology
             // 
@@ -353,9 +353,9 @@
             addRadiologyBtn.TabIndex = 10;
             addRadiologyBtn.Text = "ثبت نسخه";
             addRadiologyBtn.UseVisualStyleBackColor = true;
-            addRadiologyBtn.Click += addRadiologyBtn_Click_1;
+            addRadiologyBtn.Click += AddRadiologyPrescription;
             // 
-            // DrForm
+            // PrescriptionForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -364,8 +364,8 @@
             Controls.Add(groupBox2);
             Controls.Add(timeLbl);
             Controls.Add(groupBox1);
-            Name = "DrForm";
-            Text = "DrForm";
+            Name = "PrescriptionForm";
+            Text = "PrescriptionForm";
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
             groupBox2.ResumeLayout(false);

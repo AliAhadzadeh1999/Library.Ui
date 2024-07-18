@@ -2,10 +2,14 @@
 
 public class Medicine
 {
+    public Medicine()
+    {
+        PrescriptionMedicine = new HashSet<PrescriptionMedicine>();
+    }
     public int Id { get; set; }
-    public int PrescriptionId { get; set; }
-    public Prescription? Prescription { get; set; }
-    public int MedicineTypeId { get; set; }
-    public MedicineType? MedicineType { get; set; }
+    public string? Name { get; set; }
+    public long Price { get; set; }
+
+    public ICollection<PrescriptionMedicine>? PrescriptionMedicine { get; set; }
 
 }

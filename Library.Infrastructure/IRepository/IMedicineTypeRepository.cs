@@ -8,7 +8,7 @@ namespace Library.Infrastructure.IRepository
         
         public List<string> GetAll();
 
-        public MedicineType GetByName(string name);
+        public Medicine GetByName(string name);
 
     }
 }

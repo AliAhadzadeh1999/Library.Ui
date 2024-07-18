@@ -20,12 +20,12 @@ namespace Library.Infrastructure.Repository
         }
         public List<string> GetAll()
         {
-            return context.MedicineType.Select(x => x.Name).ToList();
+            return context.Medicine.Select(x => x.Name).ToList();
         }
 
-        public MedicineType GetByName(string name)
+        public Medicine GetByName(string name)
         {
-            return context.MedicineType.AsNoTracking().FirstOrDefault(x => x.Name == name);
+            return context.Medicine.AsNoTracking().FirstOrDefault(x => x.Name == name);
         }
     }
 }

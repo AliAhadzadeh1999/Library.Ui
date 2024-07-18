@@ -1,7 +1,6 @@
 ﻿using Library.Infrastructure.Contexts;
 using Library.Infrastructure.IRepository;
 using Library.Model.Models;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Library.Infrastructure.Repository
 {
@@ -12,9 +11,11 @@ namespace Library.Infrastructure.Repository
         {
             context = new LibraryContext();
         }
+
+        //TODO Must Add SameTime Prescription and PrescriptionMedicine
         public void Add(Prescription prescription)
         {
-            context.Prescription.Add(prescription);
+            context.Prescription?.Add(prescription);
             context.SaveChanges();
         }
     }

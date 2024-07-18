@@ -15,7 +15,7 @@ namespace Library.Infrastructure.Repository
         }
         public User GetByUsername()
         {
-            var x = context.User.Include(loginAccesss => loginAccesss.LoginAccess.UserType).AsNoTracking().FirstOrDefault();
+            var x = context.User?.Include(loginAccess => loginAccess.LoginAccess.UserType).AsNoTracking().FirstOrDefault();
             return x;
         }
     }

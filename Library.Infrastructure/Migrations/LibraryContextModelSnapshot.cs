@@ -21,7 +21,7 @@ namespace Library.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("Library.Model.Models.Dr", b =>
+            modelBuilder.Entity("Library.Model.Models.Doctor", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -39,7 +39,7 @@ namespace Library.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Dr");
+                    b.ToTable("Doctor");
                 });
 
             modelBuilder.Entity("Library.Model.Models.Insurance", b =>
@@ -110,7 +110,7 @@ namespace Library.Infrastructure.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Library.Model.Models.Labratory", b =>
+            modelBuilder.Entity("Library.Model.Models.Laboratory", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -118,7 +118,7 @@ namespace Library.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("LabratoryTypeId")
+                    b.Property<int>("LaboratoryTypeId")
                         .HasColumnType("int");
 
                     b.Property<int>("PrescriptionId")
@@ -126,14 +126,14 @@ namespace Library.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("LabratoryTypeId");
+                    b.HasIndex("LaboratoryTypeId");
 
                     b.HasIndex("PrescriptionId");
 
-                    b.ToTable("Labratory");
+                    b.ToTable("Laboratory");
                 });
 
-            modelBuilder.Entity("Library.Model.Models.LabratoryType", b =>
+            modelBuilder.Entity("Library.Model.Models.LaboratoryType", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -149,7 +149,7 @@ namespace Library.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("LabratoryType");
+                    b.ToTable("LaboratoryType");
                 });
 
             modelBuilder.Entity("Library.Model.Models.LoginAccess", b =>
@@ -173,29 +173,6 @@ namespace Library.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("MedicineTypeId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PrescriptionId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MedicineTypeId");
-
-                    b.HasIndex("PrescriptionId");
-
-                    b.ToTable("Medicine");
-                });
-
-            modelBuilder.Entity("Library.Model.Models.MedicineType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
@@ -204,7 +181,7 @@ namespace Library.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("MedicineType");
+                    b.ToTable("Medicine");
 
                     b.HasData(
                         new
@@ -297,6 +274,29 @@ namespace Library.Infrastructure.Migrations
                     b.HasIndex("PersonId");
 
                     b.ToTable("Prescription");
+                });
+
+            modelBuilder.Entity("Library.Model.Models.PrescriptionMedicine", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("MedicineTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PrescriptionId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MedicineTypeId");
+
+                    b.HasIndex("PrescriptionId");
+
+                    b.ToTable("PrescriptionMedicine");
                 });
 
             modelBuilder.Entity("Library.Model.Models.Radiology", b =>
@@ -402,11 +402,11 @@ namespace Library.Infrastructure.Migrations
                     b.Navigation("Person");
                 });
 
-            modelBuilder.Entity("Library.Model.Models.Labratory", b =>
+            modelBuilder.Entity("Library.Model.Models.Laboratory", b =>
                 {
-                    b.HasOne("Library.Model.Models.LabratoryType", "LabratoryType")
-                        .WithMany("Labratorys")
-                        .HasForeignKey("LabratoryTypeId")
+                    b.HasOne("Library.Model.Models.LaboratoryType", "LaboratoryType")
+                        .WithMany("Laboratories")
+                        .HasForeignKey("LaboratoryTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -416,7 +416,7 @@ namespace Library.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("LabratoryType");
+                    b.Navigation("LaboratoryType");
 
                     b.Navigation("Prescription");
                 });
@@ -432,28 +432,9 @@ namespace Library.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Library.Model.Models.Medicine", b =>
-                {
-                    b.HasOne("Library.Model.Models.MedicineType", "MedicineType")
-                        .WithMany("Medicine")
-                        .HasForeignKey("MedicineTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Library.Model.Models.Prescription", "Prescription")
-                        .WithMany("Medicines")
-                        .HasForeignKey("PrescriptionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("MedicineType");
-
-                    b.Navigation("Prescription");
-                });
-
             modelBuilder.Entity("Library.Model.Models.Prescription", b =>
                 {
-                    b.HasOne("Library.Model.Models.Dr", "Dr")
+                    b.HasOne("Library.Model.Models.Doctor", "Dr")
                         .WithMany("Prescriptions")
                         .HasForeignKey("DrId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -468,6 +449,25 @@ namespace Library.Infrastructure.Migrations
                     b.Navigation("Dr");
 
                     b.Navigation("Person");
+                });
+
+            modelBuilder.Entity("Library.Model.Models.PrescriptionMedicine", b =>
+                {
+                    b.HasOne("Library.Model.Models.Medicine", "MedicineType")
+                        .WithMany("PrescriptionMedicine")
+                        .HasForeignKey("MedicineTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Library.Model.Models.Prescription", "Prescription")
+                        .WithMany("Medicines")
+                        .HasForeignKey("PrescriptionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("MedicineType");
+
+                    b.Navigation("Prescription");
                 });
 
             modelBuilder.Entity("Library.Model.Models.Radiology", b =>
@@ -489,7 +489,7 @@ namespace Library.Infrastructure.Migrations
                     b.Navigation("RadiologyType");
                 });
 
-            modelBuilder.Entity("Library.Model.Models.Dr", b =>
+            modelBuilder.Entity("Library.Model.Models.Doctor", b =>
                 {
                     b.Navigation("Prescriptions");
                 });
@@ -499,14 +499,14 @@ namespace Library.Infrastructure.Migrations
                     b.Navigation("Insurance");
                 });
 
-            modelBuilder.Entity("Library.Model.Models.LabratoryType", b =>
+            modelBuilder.Entity("Library.Model.Models.LaboratoryType", b =>
                 {
-                    b.Navigation("Labratorys");
+                    b.Navigation("Laboratories");
                 });
 
-            modelBuilder.Entity("Library.Model.Models.MedicineType", b =>
+            modelBuilder.Entity("Library.Model.Models.Medicine", b =>
                 {
-                    b.Navigation("Medicine");
+                    b.Navigation("PrescriptionMedicine");
                 });
 
             modelBuilder.Entity("Library.Model.Models.Person", b =>

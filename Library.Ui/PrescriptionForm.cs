@@ -4,32 +4,31 @@ using Library.Model.Models;
 
 namespace Library.Ui
 {
-    public partial class DrForm : Form
+    public partial class PrescriptionForm : Form
     {
         private readonly IPersonRepository personRepository;
         private readonly IInsuranceRepository insuranceRepository;
-        private readonly IMedicineRepository medicineRepository;
         private readonly IMedicineTypeRepository medicineTypeRepository;
         private readonly IRadiologyTypeRepositry radiologyTypeRepository;
         private readonly IRadiologyRepositry radiologyRepository;
         private readonly IPrescriptionRepository prescriptionRepository;
+        private List<string> listMedicineNames = new List<string>();
+        private List<string> listRadiologyNames = new List<string>();
 
-        public DrForm()
+        public PrescriptionForm()
         {
             personRepository = new PersonRepository();
             insuranceRepository = new InsuranceRepository();
             medicineTypeRepository = new MedicineTypeRepository();
             prescriptionRepository = new PrescriptionRepository();
-            medicineRepository = new MedicineRepository();
             radiologyTypeRepository = new RadiologyTypeRepositry();
             radiologyRepository = new RadiologyRepositry();
             InitializeComponent();
         }
-        List<string> listMedicineNames = new List<string>();
-        List<string> listRadiologyNames = new List<string>();
+       
         private void FillInformationGB()
         {
-            Person personInfo = PersonInfo();
+            var personInfo = PersonInfo();
             InsuranceInfo(personInfo);
             FillComboBoxMedicine();
             FillComboBoxRadiology();
@@ -69,9 +68,7 @@ namespace Library.Ui
             return personInfo;
         }
 
-
-
-        private void searchByNationalCode_Click(object sender, EventArgs e)
+        private void SearchByNationalCode(object sender, EventArgs e)
         {
             if (!string.IsNullOrEmpty(nationalCodeTxt2.Text)) //&& nationalCodeTxt2.TextLength == 10
             {
@@ -79,20 +76,22 @@ namespace Library.Ui
             }
             nationalCodeTxt2.Clear();
         }
-        private void addRadiologyBtn_Click_1(object sender, EventArgs e)
+
+        private void AddRadiologyPrescription(object sender, EventArgs e)
         {
             var personInfo = personRepository.GetById(nationalCodeTxt2.Text);
 
-            var x = new Prescription()
+            var prescription = new Prescription()
             {
                 DrId = 2,
                 PersonId = personInfo.Id
             };
-            prescriptionRepository.Add(x);
+
+            prescriptionRepository.Add(prescription);
             foreach (var item in listRadiologyNames)
             {
                 var y = radiologyTypeRepository.GetByName(item);
-                AddMedicineRepository(y.Id, x.Id);
+                AddMedicineRepository(y.Id, prescription.Id);
             }
 
             dataGridViewRadiology.Rows.Clear();
@@ -104,7 +103,7 @@ namespace Library.Ui
             radiologyRepository.Add(new Radiology { RadiologyTypeId = radiologyTypeId, PrescriptionId = prescriptionId });
         }
 
-        private void addRadiologyToGv_Click(object sender, EventArgs e)
+        private void AddRadiologyToGv_Click(object sender, EventArgs e)
         {
             var x = comboRadiology.SelectedItem;
 
@@ -115,7 +114,7 @@ namespace Library.Ui
             dataGridViewRadiology.Rows.Add(x.ToString());
         }
 
-        private void addMedicineBtn_Click(object sender, EventArgs e)
+        private void AddMedicineBtn_Click(object sender, EventArgs e)
         {
             var personInfo = personRepository.GetById(nationalCodeTxt2.Text);
 
@@ -136,9 +135,9 @@ namespace Library.Ui
         }
         private void AddMedicineRepository(int medicineTypeId, int prescriptionId)
         {
-            medicineRepository.Add(new Medicine { MedicineTypeId = medicineTypeId, PrescriptionId = prescriptionId });
+           // medicineRepository.Add(new PrescriptionMedicine { MedicineTypeId = medicineTypeId, PrescriptionId = prescriptionId });
         }
-        private void addMedicnebtnToGw_Click(object sender, EventArgs e)
+        private void AddMedicineToGw(object sender, EventArgs e)
         {
             var x = comboMedicine.SelectedItem;
 

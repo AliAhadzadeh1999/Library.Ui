@@ -13,9 +13,9 @@ namespace Library.Infrastructure.Repository
             throw new NotImplementedException();
         }
 
-        public Dr GetById(int id)
+        public Doctor GetById(int id)
         {
-            return context.Dr.AsNoTracking().FirstOrDefault(x => x.Id == id);
+            return context.Doctor.AsNoTracking().FirstOrDefault(x => x.Id == id);
         }
     }
 }

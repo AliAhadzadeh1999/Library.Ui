@@ -12,10 +12,9 @@ namespace Library.Infrastructure.Repository
         {
             context = new LibraryContext();
         }
-        public Insurance GetById(int id)
+        public Insurance? GetById(int id)
         {
-            return context.Insurance.Include(x => x.InsuranceType).AsNoTracking().FirstOrDefault();
-
+            return context.Insurance?.Include(x => x.InsuranceType).AsNoTracking().FirstOrDefault();
         }
     }
 }

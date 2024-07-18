@@ -2,9 +2,9 @@
 
 namespace Library.Model.Models;
 
-public class Dr
+public class Doctor
 {
-    public Dr()
+    public Doctor()
     {
         Prescriptions = new HashSet<Prescription>();
     }
