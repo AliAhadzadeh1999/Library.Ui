@@ -14,61 +14,6 @@ namespace Library.Ui
         private readonly IRadiologyRepositry radiologyRepository;
         private readonly IPrescriptionRepository prescriptionRepository;
 
-        private readonly string nationalIdSeedData = "0312020244";
-        private readonly Person personSeedData = new Person()
-        {
-            Id = 1,
-            DateOfBirth = "13780624",
-            Family = "احدزاده",
-            FatherName = "عادل",
-            Name = "علی",
-            NationalId = "0312020244"
-
-        };
-        private readonly Insurance insuranceSeedData = new Insurance()
-        {
-            InsuranceTypeId = 1,
-            PersonId = 1,
-            StartDate = "14010509",
-            ExpireDate = "14020509"
-        };
-
-        private readonly List<InsuranceType> insuranceTypeSeedData = new List<InsuranceType>()
-        {
-            new InsuranceType() { Id = 1,Name ="تامین اجتماعی"}
-        };
-        private List<MedicineType> medicineTypeSeedData = new List<MedicineType>
-        {
-            new MedicineType{
-                Id =1,
-                Name = "استامینوفن"
-            },
-            new MedicineType{
-                Id =2,
-                Name = "ژلوفن"
-            },
-            new MedicineType{
-                Id =3,
-                Name = "پروفن"
-            },
-        };
-
-        private List<RadiologyType> radiologyTypeSeedData = new List<RadiologyType>
-        {
-            new RadiologyType{
-                Id =1,
-                Name="استخوان"
-            },
-            new RadiologyType{
-                Id =2,
-                Name="اعضای داخلی"
-            },
-            new RadiologyType{
-                Id =3,
-                Name="غضروف"
-            },
-        };
-
         public DrForm()
         {
             personRepository = new PersonRepository();
@@ -79,7 +24,6 @@ namespace Library.Ui
             radiologyTypeRepository = new RadiologyTypeRepositry();
             radiologyRepository = new RadiologyRepositry();
             InitializeComponent();
-            nationalCodeTxt2.Text = nationalIdSeedData;
         }
         List<string> listMedicineNames = new List<string>();
         List<string> listRadiologyNames = new List<string>();
@@ -93,7 +37,7 @@ namespace Library.Ui
 
         private void FillComboBoxMedicine()
         {
-            var medicineNames = medicineTypeSeedData.Select(x => x.Name);
+            var medicineNames = medicineTypeRepository.GetAll();
             foreach (var item in medicineNames)
             {
                 comboMedicine.Items.Add(item);
@@ -101,7 +45,7 @@ namespace Library.Ui
         }
         private void FillComboBoxRadiology()
         {
-            var radiologyNames = radiologyTypeSeedData.Select(x => x.Name);
+            var radiologyNames = radiologyTypeRepository.GetAll();
             foreach (var item in radiologyNames)
             {
                 comboRadiology.Items.Add(item);
@@ -110,14 +54,14 @@ namespace Library.Ui
 
         private void InsuranceInfo(Person personInfo)
         {
-            var info2 = insuranceSeedData;
+            var info2 = insuranceRepository.GetById(personInfo.Id);
             expireDateTxt.Text = info2.ExpireDate;
             insuranceType.Text = info2.InsuranceType?.Name;
         }
 
         private Person PersonInfo()
         {
-            var personInfo = personSeedData;
+            var personInfo = personRepository.GetById(nationalCodeTxt2.Text);
             nameTxt.Text = personInfo.Name;
             familyTxt.Text = personInfo.Family;
             fatherNameTxt.Text = personInfo.FatherName;
@@ -147,7 +91,7 @@ namespace Library.Ui
             prescriptionRepository.Add(x);
             foreach (var item in listRadiologyNames)
             {
-                var y = radiologyTypeSeedData.FirstOrDefault(x => x.Name == item);
+                var y = radiologyTypeRepository.GetByName(item);
                 AddMedicineRepository(y.Id, x.Id);
             }
 
@@ -173,7 +117,7 @@ namespace Library.Ui
 
         private void addMedicineBtn_Click(object sender, EventArgs e)
         {
-            var personInfo = personSeedData;
+            var personInfo = personRepository.GetById(nationalCodeTxt2.Text);
 
             var x = new Prescription()
             {
@@ -183,7 +127,7 @@ namespace Library.Ui
             prescriptionRepository.Add(x);
             foreach (var item in listMedicineNames)
             {
-                var y = medicineTypeSeedData.FirstOrDefault(x => x.Name == item);
+                var y = medicineTypeRepository.GetByName(item);
                 AddRadiologyRepository(y.Id, x.Id);
             }
 

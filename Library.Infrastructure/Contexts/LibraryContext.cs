@@ -18,9 +18,10 @@ public class LibraryContext : DbContext
     public DbSet<RadiologyType>? RadiologyType { get; set; }
     public DbSet<User>? User { get; set; }
     public DbSet<LoginAccess>? LoginAccess { get; set; }
-
-
-
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Seed();
+    }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.UseSqlServer(ConnectionString.ConnectionString.AdvConnectionString);
