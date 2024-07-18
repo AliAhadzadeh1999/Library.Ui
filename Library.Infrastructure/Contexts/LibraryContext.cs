@@ -21,10 +21,10 @@ public class LibraryContext : DbContext
 
 
 
-    //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    //{
-    //    optionsBuilder.UseSqlServer(ConnectionString.ConnectionString.AdvConnectionString);
-    //    base.OnConfiguring(optionsBuilder);
-    //}
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.UseSqlServer(ConnectionString.ConnectionString.AdvConnectionString);
+        base.OnConfiguring(optionsBuilder);
+    }
 
 }
