@@ -15,13 +15,13 @@ namespace Library.Infrastructure.Repository
         }
         public List<string> GetAll()
         {
-            return context.RadiologyType.Select(x => x.Name).ToList();
+            return context.Radiology.Select(x => x.Name).ToList();
         }
 
-        public RadiologyType GetByName(string name)
+        public Radiology GetByName(string name)
         {
 
-            return context.RadiologyType.AsNoTracking().FirstOrDefault(x => x.Name == name);
+            return context.Radiology.AsNoTracking().FirstOrDefault(x => x.Name == name);
         }
     }
 }

@@ -9,6 +9,7 @@ namespace Library.Ui
         private readonly IPersonRepository personRepository;
         private readonly IInsuranceRepository insuranceRepository;
         private readonly IMedicineTypeRepository medicineTypeRepository;
+        private readonly IMedicineRepository medicineRepository;
         private readonly IRadiologyTypeRepositry radiologyTypeRepository;
         private readonly IRadiologyRepositry radiologyRepository;
         private readonly IPrescriptionRepository prescriptionRepository;
@@ -23,6 +24,7 @@ namespace Library.Ui
             prescriptionRepository = new PrescriptionRepository();
             radiologyTypeRepository = new RadiologyTypeRepositry();
             radiologyRepository = new RadiologyRepositry();
+            medicineRepository = new MedicineRepository();
             InitializeComponent();
         }
        
@@ -70,7 +72,7 @@ namespace Library.Ui
 
         private void SearchByNationalCode(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(nationalCodeTxt2.Text)) //&& nationalCodeTxt2.TextLength == 10
+            if (!string.IsNullOrEmpty(nationalCodeTxt2.Text)) 
             {
                 FillInformationGB();
             }
@@ -80,27 +82,28 @@ namespace Library.Ui
         private void AddRadiologyPrescription(object sender, EventArgs e)
         {
             var personInfo = personRepository.GetById(nationalCodeTxt2.Text);
+            Radiology y = new Radiology();
 
-            var prescription = new Prescription()
+
+            foreach (var item in listRadiologyNames)
+            {
+                y = radiologyTypeRepository.GetByName(item);
+            }
+
+            var x = new Prescription()
             {
                 DrId = 2,
                 PersonId = personInfo.Id
             };
-
-            prescriptionRepository.Add(prescription);
-            foreach (var item in listRadiologyNames)
+            prescriptionRepository.Add(x);
+            var z = new PrescriptionRadiology()
             {
-                var y = radiologyTypeRepository.GetByName(item);
-                AddMedicineRepository(y.Id, prescription.Id);
-            }
-
+                PrescriptionId = x.Id,
+                RadiologyTypeId = y.Id,
+            };
+            radiologyRepository.Add(z);
             dataGridViewRadiology.Rows.Clear();
             ClearGb();
-        }
-
-        private void AddRadiologyRepository(int radiologyTypeId, int prescriptionId)
-        {
-            radiologyRepository.Add(new Radiology { RadiologyTypeId = radiologyTypeId, PrescriptionId = prescriptionId });
         }
 
         private void AddRadiologyToGv_Click(object sender, EventArgs e)
@@ -117,6 +120,13 @@ namespace Library.Ui
         private void AddMedicineBtn_Click(object sender, EventArgs e)
         {
             var personInfo = personRepository.GetById(nationalCodeTxt2.Text);
+            Medicine medicine = new Medicine();
+            
+            
+            foreach (var item in listMedicineNames)
+            {
+                medicine = medicineTypeRepository.GetByName(item);
+            }
 
             var x = new Prescription()
             {
@@ -124,18 +134,15 @@ namespace Library.Ui
                 PersonId = personInfo.Id
             };
             prescriptionRepository.Add(x);
-            foreach (var item in listMedicineNames)
+            var z = new PrescriptionMedicine()
             {
-                var y = medicineTypeRepository.GetByName(item);
-                AddRadiologyRepository(y.Id, x.Id);
-            }
+                PrescriptionId = x.Id,
+                MedicineTypeId = medicine.Id,
+            };
+            medicineRepository.Add(z);
 
-            dataGridViewRadiology.Rows.Clear();
+            dataGridViewMedicine.Rows.Clear();
             ClearGb();
-        }
-        private void AddMedicineRepository(int medicineTypeId, int prescriptionId)
-        {
-           // medicineRepository.Add(new PrescriptionMedicine { MedicineTypeId = medicineTypeId, PrescriptionId = prescriptionId });
         }
         private void AddMedicineToGw(object sender, EventArgs e)
         {
@@ -147,7 +154,6 @@ namespace Library.Ui
             listMedicineNames.Add(x.ToString());
             dataGridViewMedicine.Rows.Add(x.ToString());
         }
-
         private void ClearGb()
         {
             nameTxt.Text = "";

@@ -39,10 +39,24 @@ namespace Library.Infrastructure.Contexts
                 new Medicine { Id = 3, Name = "پروفن" }
                 );
 
-            modelBuilder.Entity<RadiologyType>().HasData(
-                new RadiologyType { Id = 1, Name = "استخوان" },
-                new RadiologyType { Id = 2, Name = "اعضای داخلی" },
-                new RadiologyType { Id = 3, Name = "غضروف" }
+            modelBuilder.Entity<Radiology>().HasData(
+                new Radiology { Id = 1, Name = "استخوان" },
+                new Radiology { Id = 2, Name = "اعضای داخلی" },
+                new Radiology { Id = 3, Name = "غضروف" }
+                );
+
+            modelBuilder.Entity<Doctor>().HasData(
+                new Doctor { 
+                    Id=1,
+                MedicalEducationNumber= "1354698",
+                Name= "احمد ذوقی"
+                },
+                new Doctor
+                {
+                    Id=2,
+                    MedicalEducationNumber = "1242456",
+                    Name = "2احمد ذوقی"
+                }
                 );
         }
 

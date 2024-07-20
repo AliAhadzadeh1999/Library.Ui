@@ -17,6 +17,7 @@ namespace Library.Infrastructure.Repository
         {
             context.Prescription?.Add(prescription);
             context.SaveChanges();
+            
         }
     }
 }

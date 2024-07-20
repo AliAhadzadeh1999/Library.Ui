@@ -7,10 +7,8 @@ using System.Threading.Tasks;
 
 namespace Library.Infrastructure.IRepository
 {
-    public interface IRadiologyTypeRepositry
+    public interface IMedicineRepository
     {
-        public List<string> GetAll();
-
-        public Radiology GetByName(string name);
+        public void Add(PrescriptionMedicine prescriptionMedicine);
     }
 }

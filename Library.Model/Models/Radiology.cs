@@ -2,9 +2,13 @@
 
 public class Radiology
 {
+    public Radiology()
+    {
+        Radiologies = new HashSet<PrescriptionRadiology>();
+    }
     public int Id { get; set; }
-    public int PrescriptionId { get; set; }
-    public Prescription? Prescription { get; set; }
-    public int RadiologyTypeId { get; set; }
-    public RadiologyType? RadiologyType { get; set; }
+    public string? Name { get; set; }
+    public long Price { get; set; }
+
+    public ICollection<PrescriptionRadiology>? Radiologies{ get; set; }
 }

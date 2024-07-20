@@ -2,9 +2,13 @@
 
 public class Laboratory
 {
+    public Laboratory()
+    {
+        Laboratories = new HashSet<PrescriptionLaboratory>();
+    }
     public int Id { get; set; }
-    public int PrescriptionId { get; set; }
-    public Prescription? Prescription { get; set; }
-    public int LaboratoryTypeId { get; set; }
-    public LaboratoryType? LaboratoryType { get; set; }
+    public string? Name { get; set; }
+    public long Price { get; set; }
+
+    public ICollection<PrescriptionLaboratory>? Laboratories { get; set; }
 }

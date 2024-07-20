@@ -3,6 +3,7 @@ using Library.Infrastructure.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Library.Infrastructure.Migrations
 {
     [DbContext(typeof(LibraryContext))]
-    partial class LibraryContextModelSnapshot : ModelSnapshot
+    [Migration("20240719104636_test9")]
+    partial class test9
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -40,20 +42,6 @@ namespace Library.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Doctor");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            MedicalEducationNumber = "1354698",
-                            Name = "احمد ذوقی"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            MedicalEducationNumber = "1242456",
-                            Name = "2احمد ذوقی"
-                        });
                 });
 
             modelBuilder.Entity("Library.Model.Models.Insurance", b =>
@@ -140,7 +128,7 @@ namespace Library.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Laboratory");
+                    b.ToTable("LaboratoryType");
                 });
 
             modelBuilder.Entity("Library.Model.Models.LoginAccess", b =>
@@ -287,7 +275,7 @@ namespace Library.Infrastructure.Migrations
 
                     b.HasIndex("PrescriptionId");
 
-                    b.ToTable("PrescriptionLaboratory");
+                    b.ToTable("Laboratory");
                 });
 
             modelBuilder.Entity("Library.Model.Models.PrescriptionMedicine", b =>
@@ -333,7 +321,7 @@ namespace Library.Infrastructure.Migrations
 
                     b.HasIndex("RadiologyTypeId");
 
-                    b.ToTable("PrescriptionRadiology");
+                    b.ToTable("Radiology");
                 });
 
             modelBuilder.Entity("Library.Model.Models.Radiology", b =>
@@ -352,7 +340,7 @@ namespace Library.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Radiology");
+                    b.ToTable("RadiologyType");
 
                     b.HasData(
                         new

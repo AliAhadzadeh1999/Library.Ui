@@ -12,9 +12,9 @@ namespace Library.Infrastructure.Repository
         {
             context = new LibraryContext();
         }
-        public void Add(Radiology radiology)
+        public void Add(PrescriptionRadiology prescriptionRadiology)
         {
-            context.Radiology.Add(radiology);
+            context.PrescriptionRadiology.Add(prescriptionRadiology);
             context.SaveChanges();
         }
     }
