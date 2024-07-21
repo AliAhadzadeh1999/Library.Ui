@@ -9,10 +9,13 @@ namespace Library.Ui
         private readonly IPersonRepository personRepository;
         private readonly IInsuranceRepository insuranceRepository;
         private readonly IMedicineTypeRepository medicineTypeRepository;
-        private readonly IMedicineRepository medicineRepository;
         private readonly IRadiologyTypeRepositry radiologyTypeRepository;
+        ///////////////////////////////////////////////////////////////////////////////
+        private readonly IMedicineRepository medicineRepository;
         private readonly IRadiologyRepositry radiologyRepository;
+        //TODO you must remove two above repositories and just use this
         private readonly IPrescriptionRepository prescriptionRepository;
+        ///////////////////////////////////////////////////////////////////////////////
         private List<string> listMedicineNames = new List<string>();
         private List<string> listRadiologyNames = new List<string>();
 
@@ -120,6 +123,9 @@ namespace Library.Ui
         private void AddMedicineBtn_Click(object sender, EventArgs e)
         {
             var personInfo = personRepository.GetById(nationalCodeTxt2.Text);
+
+            //TODO you shouldn't go to DB 
+            ///////////////////////////////////////////////////////////////////////////////
             Medicine medicine = new Medicine();
             
             
@@ -127,18 +133,21 @@ namespace Library.Ui
             {
                 medicine = medicineTypeRepository.GetByName(item);
             }
-
+            ///////////////////////////////////////////////////////////////////////////////
+            //Todo correct variable name : x, z not acceptable
             var x = new Prescription()
             {
                 DrId = 2,
                 PersonId = personInfo.Id
             };
+
             prescriptionRepository.Add(x);
             var z = new PrescriptionMedicine()
             {
                 PrescriptionId = x.Id,
                 MedicineTypeId = medicine.Id,
             };
+
             medicineRepository.Add(z);
 
             dataGridViewMedicine.Rows.Clear();
