@@ -40,20 +40,6 @@ namespace Library.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Doctor");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            MedicalEducationNumber = "1354698",
-                            Name = "احمد ذوقی"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            MedicalEducationNumber = "1242456",
-                            Name = "2احمد ذوقی"
-                        });
                 });
 
             modelBuilder.Entity("Library.Model.Models.Insurance", b =>
@@ -298,7 +284,7 @@ namespace Library.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("MedicineTypeId")
+                    b.Property<int>("MedicineId")
                         .HasColumnType("int");
 
                     b.Property<int>("PrescriptionId")
@@ -306,7 +292,7 @@ namespace Library.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MedicineTypeId");
+                    b.HasIndex("MedicineId");
 
                     b.HasIndex("PrescriptionId");
 
@@ -324,14 +310,14 @@ namespace Library.Infrastructure.Migrations
                     b.Property<int>("PrescriptionId")
                         .HasColumnType("int");
 
-                    b.Property<int>("RadiologyTypeId")
+                    b.Property<int>("RadiologyId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("PrescriptionId");
 
-                    b.HasIndex("RadiologyTypeId");
+                    b.HasIndex("RadiologyId");
 
                     b.ToTable("PrescriptionRadiology");
                 });
@@ -467,19 +453,19 @@ namespace Library.Infrastructure.Migrations
 
             modelBuilder.Entity("Library.Model.Models.PrescriptionMedicine", b =>
                 {
-                    b.HasOne("Library.Model.Models.Medicine", "MedicineType")
-                        .WithMany("PrescriptionMedicine")
-                        .HasForeignKey("MedicineTypeId")
+                    b.HasOne("Library.Model.Models.Medicine", "Medicine")
+                        .WithMany("prescriptionMedicines")
+                        .HasForeignKey("MedicineId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Library.Model.Models.Prescription", "Prescription")
-                        .WithMany("Medicines")
+                        .WithMany("PrescriptionMedicines")
                         .HasForeignKey("PrescriptionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("MedicineType");
+                    b.Navigation("Medicine");
 
                     b.Navigation("Prescription");
                 });
@@ -487,20 +473,20 @@ namespace Library.Infrastructure.Migrations
             modelBuilder.Entity("Library.Model.Models.PrescriptionRadiology", b =>
                 {
                     b.HasOne("Library.Model.Models.Prescription", "Prescription")
-                        .WithMany("Radiologies")
+                        .WithMany("PrescriptionRadiologies")
                         .HasForeignKey("PrescriptionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Library.Model.Models.Radiology", "RadiologyType")
+                    b.HasOne("Library.Model.Models.Radiology", "Radiology")
                         .WithMany("Radiologies")
-                        .HasForeignKey("RadiologyTypeId")
+                        .HasForeignKey("RadiologyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Prescription");
 
-                    b.Navigation("RadiologyType");
+                    b.Navigation("Radiology");
                 });
 
             modelBuilder.Entity("Library.Model.Models.Doctor", b =>
@@ -520,7 +506,7 @@ namespace Library.Infrastructure.Migrations
 
             modelBuilder.Entity("Library.Model.Models.Medicine", b =>
                 {
-                    b.Navigation("PrescriptionMedicine");
+                    b.Navigation("prescriptionMedicines");
                 });
 
             modelBuilder.Entity("Library.Model.Models.Person", b =>
@@ -534,9 +520,9 @@ namespace Library.Infrastructure.Migrations
                 {
                     b.Navigation("Labratories");
 
-                    b.Navigation("Medicines");
+                    b.Navigation("PrescriptionMedicines");
 
-                    b.Navigation("Radiologies");
+                    b.Navigation("PrescriptionRadiologies");
                 });
 
             modelBuilder.Entity("Library.Model.Models.Radiology", b =>

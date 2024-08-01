@@ -10,5 +10,7 @@ namespace Library.Infrastructure.IRepository
     public interface IRadiologyRepositry
     {
         public void Add(PrescriptionRadiology prescriptionRadiology);
+
+        public IQueryable<Radiology> GetAll();
     }
 }

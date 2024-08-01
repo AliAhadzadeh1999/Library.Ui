@@ -7,6 +7,7 @@ namespace Library.Infrastructure.Contexts
     {
         public static void Seed(this ModelBuilder modelBuilder)
         {
+
             modelBuilder.Entity<Person>().HasData(
                 new Person
                 {
@@ -45,19 +46,7 @@ namespace Library.Infrastructure.Contexts
                 new Radiology { Id = 3, Name = "غضروف" }
                 );
 
-            modelBuilder.Entity<Doctor>().HasData(
-                new Doctor { 
-                    Id=1,
-                MedicalEducationNumber= "1354698",
-                Name= "احمد ذوقی"
-                },
-                new Doctor
-                {
-                    Id=2,
-                    MedicalEducationNumber = "1242456",
-                    Name = "2احمد ذوقی"
-                }
-                );
+
         }
 
 

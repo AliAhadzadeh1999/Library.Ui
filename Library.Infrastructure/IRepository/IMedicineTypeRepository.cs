@@ -6,7 +6,7 @@ namespace Library.Infrastructure.IRepository
     public interface IMedicineTypeRepository
     {
         
-        public List<string> GetAll();
+        public List<Medicine> GetAll();
 
         public Medicine GetByName(string name);
 

@@ -1,71 +1,71 @@
-﻿using Library.Infrastructure.IRepository;
-using Library.Infrastructure.Repository;
+﻿using Library.Application.Contract.DTOs;
+using Library.Application.Contract.DTOs.Prescriptions;
+using Library.Application.Contract.IServices;
+using Library.Application.Services;
 using Library.Model.Models;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Drawing;
 
 namespace Library.Ui
 {
     public partial class PrescriptionForm : Form
     {
-        private readonly IPersonRepository personRepository;
-        private readonly IInsuranceRepository insuranceRepository;
-        private readonly IMedicineTypeRepository medicineTypeRepository;
-        private readonly IRadiologyTypeRepositry radiologyTypeRepository;
-        ///////////////////////////////////////////////////////////////////////////////
-        private readonly IMedicineRepository medicineRepository;
-        private readonly IRadiologyRepositry radiologyRepository;
-        //TODO you must remove two above repositories and just use this
-        private readonly IPrescriptionRepository prescriptionRepository;
-        ///////////////////////////////////////////////////////////////////////////////
-        private List<string> listMedicineNames = new List<string>();
-        private List<string> listRadiologyNames = new List<string>();
+        private readonly IPersonService personService;
+        private readonly IInsuranceService insuranceService;
+        private readonly IMedicineTypeService medicineTypeService;
+        private readonly IRadiologyTypeService radiologyTypeService;
+        private readonly IPrescriptionService prescriptionService;
+        private readonly IMedicineService medicineService;
+        private readonly IRadiologyService radiologyService;
+        
+
 
         public PrescriptionForm()
         {
-            personRepository = new PersonRepository();
-            insuranceRepository = new InsuranceRepository();
-            medicineTypeRepository = new MedicineTypeRepository();
-            prescriptionRepository = new PrescriptionRepository();
-            radiologyTypeRepository = new RadiologyTypeRepositry();
-            radiologyRepository = new RadiologyRepositry();
-            medicineRepository = new MedicineRepository();
+            personService = new PersonService();
+            insuranceService = new InsuranceService();
+            medicineTypeService = new MedicineTypeService();
+            radiologyTypeService = new RadiologyTypeService();
+            prescriptionService = new PrescriptionService();
+            medicineService = new MedicineService();
+            radiologyService = new RadiologyService();
             InitializeComponent();
         }
-       
+
         private void FillInformationGB()
         {
-            var personInfo = PersonInfo();
-            InsuranceInfo(personInfo);
+            InsuranceInfo(PersonInfo());
             FillComboBoxMedicine();
             FillComboBoxRadiology();
         }
 
         private void FillComboBoxMedicine()
         {
-            var medicineNames = medicineTypeRepository.GetAll();
+            var medicineNames = medicineTypeService.GetAll();
             foreach (var item in medicineNames)
             {
-                comboMedicine.Items.Add(item);
+                comboMedicine.Items.Add(item.Name);
             }
         }
         private void FillComboBoxRadiology()
         {
-            var radiologyNames = radiologyTypeRepository.GetAll();
+            var radiologyNames = radiologyTypeService.GetAll();
             foreach (var item in radiologyNames)
             {
-                comboRadiology.Items.Add(item);
+                comboRadiology.Items.Add(item.Name);
             }
         }
 
         private void InsuranceInfo(Person personInfo)
         {
-            var info2 = insuranceRepository.GetById(personInfo.Id);
+            var info2 = insuranceService.GetById(personInfo.Id);
             expireDateTxt.Text = info2.ExpireDate;
             insuranceType.Text = info2.InsuranceType?.Name;
         }
 
         private Person PersonInfo()
         {
-            var personInfo = personRepository.GetById(nationalCodeTxt2.Text);
+            var personInfo = personService.GetById(nationalCodeTxt2.Text);
             nameTxt.Text = personInfo.Name;
             familyTxt.Text = personInfo.Family;
             fatherNameTxt.Text = personInfo.FatherName;
@@ -75,40 +75,42 @@ namespace Library.Ui
 
         private void SearchByNationalCode(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(nationalCodeTxt2.Text)) 
+            if (!string.IsNullOrEmpty(nationalCodeTxt2.Text))
             {
                 FillInformationGB();
             }
             nationalCodeTxt2.Clear();
         }
-
-        private void AddRadiologyPrescription(object sender, EventArgs e)
+        private void addRadiologyBtn_Click(object sender, EventArgs e)
         {
-            var personInfo = personRepository.GetById(nationalCodeTxt2.Text);
-            Radiology y = new Radiology();
+            var personInfo = personService.GetById(nationalCodeTxt2.Text);
+            var listRadiologyName = radiologyService.GetKeyValues();
 
+            var radiologyKeyValue = new List<KeyValue>();
+            List<int> result = new List<int>();
 
-            foreach (var item in listRadiologyNames)
+            for (int i = 0; i < dataGridViewRadiology.Rows.Count; i++)
             {
-                y = radiologyTypeRepository.GetByName(item);
+                var data = (string)dataGridViewRadiology[0, i].Value;
+                if (listRadiologyName.Any(x => x.Value == data))
+                {
+                    radiologyKeyValue.Add(listRadiologyName.FirstOrDefault(x => x.Value == data));
+                }
             }
 
-            var x = new Prescription()
+            foreach (var item in radiologyKeyValue)
+            {
+                result.Add(item.Key);
+            }
+            var x = new PrescriptionRadiologyAddDto()
             {
                 DrId = 2,
-                PersonId = personInfo.Id
+                PersonId = personInfo.Id,
+                Selected = result
             };
-            prescriptionRepository.Add(x);
-            var z = new PrescriptionRadiology()
-            {
-                PrescriptionId = x.Id,
-                RadiologyTypeId = y.Id,
-            };
-            radiologyRepository.Add(z);
+            prescriptionService.Add(x);
             dataGridViewRadiology.Rows.Clear();
-            ClearGb();
         }
-
         private void AddRadiologyToGv_Click(object sender, EventArgs e)
         {
             var x = comboRadiology.SelectedItem;
@@ -116,40 +118,39 @@ namespace Library.Ui
             dataGridViewRadiology.ColumnCount = 1;
             dataGridViewRadiology.Columns[0].Name = "Radiology";
 
-            listRadiologyNames.Add(x.ToString());
             dataGridViewRadiology.Rows.Add(x.ToString());
         }
 
         private void AddMedicineBtn_Click(object sender, EventArgs e)
         {
-            var personInfo = personRepository.GetById(nationalCodeTxt2.Text);
+            var personInfo = personService.GetById(nationalCodeTxt2.Text);
+            var listMedicineNames = medicineService.GetKeyValue();
 
-            //TODO you shouldn't go to DB 
-            ///////////////////////////////////////////////////////////////////////////////
-            Medicine medicine = new Medicine();
-            
-            
-            foreach (var item in listMedicineNames)
+            var medicineKeyValue = new List<KeyValue>();
+            List<int> result = new List<int>();
+
+            for (int i = 0; i < dataGridViewMedicine.Rows.Count; i++)
             {
-                medicine = medicineTypeRepository.GetByName(item);
+                var data = (string)dataGridViewMedicine[0, i].Value;
+                if (listMedicineNames.Any(x => x.Value == data))
+                {
+                    medicineKeyValue.Add(listMedicineNames.FirstOrDefault(x => x.Value == data));
+                }
+
             }
-            ///////////////////////////////////////////////////////////////////////////////
-            //Todo correct variable name : x, z not acceptable
-            var x = new Prescription()
+
+            foreach (var item in medicineKeyValue)
+            {
+                result.Add(item.Key);
+            }
+
+            var prescription = new PrescriptionMedicineAddDto()
             {
                 DrId = 2,
-                PersonId = personInfo.Id
+                PersonId = personInfo.Id,
+                Selected = result
             };
-
-            prescriptionRepository.Add(x);
-            var z = new PrescriptionMedicine()
-            {
-                PrescriptionId = x.Id,
-                MedicineTypeId = medicine.Id,
-            };
-
-            medicineRepository.Add(z);
-
+            prescriptionService.Add(prescription);
             dataGridViewMedicine.Rows.Clear();
             ClearGb();
         }
@@ -160,7 +161,7 @@ namespace Library.Ui
             dataGridViewMedicine.ColumnCount = 1;
             dataGridViewMedicine.Columns[0].Name = "Medicine";
 
-            listMedicineNames.Add(x.ToString());
+
             dataGridViewMedicine.Rows.Add(x.ToString());
         }
         private void ClearGb()
@@ -173,6 +174,6 @@ namespace Library.Ui
             insuranceType.Text = "";
         }
 
-
+        
     }
 }

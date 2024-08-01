@@ -18,9 +18,9 @@ namespace Library.Infrastructure.Repository
         {
             context = new LibraryContext();
         }
-        public List<string> GetAll()
+        public List<Medicine> GetAll()
         {
-            return context.Medicine.Select(x => x.Name).ToList();
+            return context.Medicine.ToList();
         }
 
         public Medicine GetByName(string name)

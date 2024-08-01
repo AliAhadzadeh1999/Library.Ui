@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Library.Infrastructure.Migrations
 {
     [DbContext(typeof(LibraryContext))]
-    [Migration("20240719105325_test11")]
-    partial class test11
+    [Migration("20240801183649_test21")]
+    partial class test21
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -286,7 +286,7 @@ namespace Library.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("MedicineTypeId")
+                    b.Property<int>("MedicineId")
                         .HasColumnType("int");
 
                     b.Property<int>("PrescriptionId")
@@ -294,7 +294,7 @@ namespace Library.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MedicineTypeId");
+                    b.HasIndex("MedicineId");
 
                     b.HasIndex("PrescriptionId");
 
@@ -312,14 +312,14 @@ namespace Library.Infrastructure.Migrations
                     b.Property<int>("PrescriptionId")
                         .HasColumnType("int");
 
-                    b.Property<int>("RadiologyTypeId")
+                    b.Property<int>("RadiologyId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("PrescriptionId");
 
-                    b.HasIndex("RadiologyTypeId");
+                    b.HasIndex("RadiologyId");
 
                     b.ToTable("PrescriptionRadiology");
                 });
@@ -455,19 +455,19 @@ namespace Library.Infrastructure.Migrations
 
             modelBuilder.Entity("Library.Model.Models.PrescriptionMedicine", b =>
                 {
-                    b.HasOne("Library.Model.Models.Medicine", "MedicineType")
-                        .WithMany("PrescriptionMedicine")
-                        .HasForeignKey("MedicineTypeId")
+                    b.HasOne("Library.Model.Models.Medicine", "Medicine")
+                        .WithMany("prescriptionMedicines")
+                        .HasForeignKey("MedicineId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Library.Model.Models.Prescription", "Prescription")
-                        .WithMany("Medicines")
+                        .WithMany("PrescriptionMedicines")
                         .HasForeignKey("PrescriptionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("MedicineType");
+                    b.Navigation("Medicine");
 
                     b.Navigation("Prescription");
                 });
@@ -475,20 +475,20 @@ namespace Library.Infrastructure.Migrations
             modelBuilder.Entity("Library.Model.Models.PrescriptionRadiology", b =>
                 {
                     b.HasOne("Library.Model.Models.Prescription", "Prescription")
-                        .WithMany("Radiologies")
+                        .WithMany("PrescriptionRadiologies")
                         .HasForeignKey("PrescriptionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Library.Model.Models.Radiology", "RadiologyType")
+                    b.HasOne("Library.Model.Models.Radiology", "Radiology")
                         .WithMany("Radiologies")
-                        .HasForeignKey("RadiologyTypeId")
+                        .HasForeignKey("RadiologyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Prescription");
 
-                    b.Navigation("RadiologyType");
+                    b.Navigation("Radiology");
                 });
 
             modelBuilder.Entity("Library.Model.Models.Doctor", b =>
@@ -508,7 +508,7 @@ namespace Library.Infrastructure.Migrations
 
             modelBuilder.Entity("Library.Model.Models.Medicine", b =>
                 {
-                    b.Navigation("PrescriptionMedicine");
+                    b.Navigation("prescriptionMedicines");
                 });
 
             modelBuilder.Entity("Library.Model.Models.Person", b =>
@@ -522,9 +522,9 @@ namespace Library.Infrastructure.Migrations
                 {
                     b.Navigation("Labratories");
 
-                    b.Navigation("Medicines");
+                    b.Navigation("PrescriptionMedicines");
 
-                    b.Navigation("Radiologies");
+                    b.Navigation("PrescriptionRadiologies");
                 });
 
             modelBuilder.Entity("Library.Model.Models.Radiology", b =>

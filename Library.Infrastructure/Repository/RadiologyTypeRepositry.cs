@@ -13,9 +13,9 @@ namespace Library.Infrastructure.Repository
         {
             context = new LibraryContext();
         }
-        public List<string> GetAll()
+        public List<Radiology> GetAll()
         {
-            return context.Radiology.Select(x => x.Name).ToList();
+            return context.Radiology.ToList();
         }
 
         public Radiology GetByName(string name)

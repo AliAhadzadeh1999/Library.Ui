@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-
 namespace Library.Model.Models;
 
 public class Doctor
@@ -8,6 +7,8 @@ public class Doctor
     {
         Prescriptions = new HashSet<Prescription>();
     }
+    [Key]
+    [Required]
     public int Id { get; set; }
     [StringLength(64)]
     public string? Name { get; set; }

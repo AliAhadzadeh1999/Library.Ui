@@ -9,7 +9,7 @@ namespace Library.Infrastructure.IRepository
 {
     public interface IRadiologyTypeRepositry
     {
-        public List<string> GetAll();
+        public List<Radiology> GetAll();
 
         public Radiology GetByName(string name);
     }

@@ -1,12 +1,6 @@
 ﻿using Library.Infrastructure.Contexts;
 using Library.Infrastructure.IRepository;
 using Library.Model.Models;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Library.Infrastructure.Repository
 {
@@ -20,9 +14,14 @@ namespace Library.Infrastructure.Repository
         }
 
         public void Add(PrescriptionMedicine prescriptionMedicine)
-        { 
+        {
             context.PrescriptionMedicine.Add(prescriptionMedicine);
             context.SaveChanges();
+        }
+
+        public IQueryable<Medicine> GetAll()
+        {
+            return context.Medicine;
         }
 
     }

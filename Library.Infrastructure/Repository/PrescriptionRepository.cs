@@ -15,9 +15,8 @@ namespace Library.Infrastructure.Repository
         //TODO Must Add SameTime Prescription and PrescriptionMedicine
         public void Add(Prescription prescription)
         {
-            context.Prescription?.Add(prescription);
+            context.Prescription.Add(prescription);
             context.SaveChanges();
-            
         }
     }
 }

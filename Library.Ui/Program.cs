@@ -1,3 +1,4 @@
+
 namespace Library.Ui
 {
     internal static class Program
@@ -11,7 +12,7 @@ namespace Library.Ui
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            Application.Run(new PrescriptionForm());
+            System.Windows.Forms.Application.Run(new PrescriptionForm());
         }
     }
 }

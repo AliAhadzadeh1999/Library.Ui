@@ -1,11 +1,17 @@
-﻿namespace Library.Model.Models;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-public class PrescriptionMedicine
+namespace Library.Model.Models
 {
-    public int Id { get; set; }
-    public int PrescriptionId { get; set; }
-    public Prescription? Prescription { get; set; }
-    public int MedicineTypeId { get; set; }
-    public Medicine? MedicineType { get; set; }
-
+    public class PrescriptionMedicine
+    {
+        public int Id { get; set; }
+        public int PrescriptionId { get; set; }
+        public Prescription? Prescription { get; set; }
+        public int MedicineId { get; set; }
+        public Medicine? Medicine { get; set; }
+    }
 }

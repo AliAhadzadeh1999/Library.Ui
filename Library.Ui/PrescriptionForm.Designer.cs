@@ -353,7 +353,7 @@
             addRadiologyBtn.TabIndex = 10;
             addRadiologyBtn.Text = "ثبت نسخه";
             addRadiologyBtn.UseVisualStyleBackColor = true;
-            addRadiologyBtn.Click += AddRadiologyPrescription;
+            addRadiologyBtn.Click += addRadiologyBtn_Click;
             // 
             // PrescriptionForm
             // 

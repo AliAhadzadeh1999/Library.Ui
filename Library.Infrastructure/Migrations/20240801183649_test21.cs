@@ -4,7 +4,7 @@
 
 namespace Library.Infrastructure.Migrations
 {
-    public partial class Init : Migration
+    public partial class test21 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -36,7 +36,7 @@ namespace Library.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "LaboratoryType",
+                name: "Laboratory",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -46,7 +46,7 @@ namespace Library.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_LaboratoryType", x => x.Id);
+                    table.PrimaryKey("PK_Laboratory", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -81,7 +81,7 @@ namespace Library.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "RadiologyType",
+                name: "Radiology",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -91,7 +91,7 @@ namespace Library.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RadiologyType", x => x.Id);
+                    table.PrimaryKey("PK_Radiology", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -182,7 +182,7 @@ namespace Library.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Laboratory",
+                name: "PrescriptionLaboratory",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -192,15 +192,15 @@ namespace Library.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Laboratory", x => x.Id);
+                    table.PrimaryKey("PK_PrescriptionLaboratory", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Laboratory_LaboratoryType_LaboratoryTypeId",
+                        name: "FK_PrescriptionLaboratory_Laboratory_LaboratoryTypeId",
                         column: x => x.LaboratoryTypeId,
-                        principalTable: "LaboratoryType",
+                        principalTable: "Laboratory",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Laboratory_Prescription_PrescriptionId",
+                        name: "FK_PrescriptionLaboratory_Prescription_PrescriptionId",
                         column: x => x.PrescriptionId,
                         principalTable: "Prescription",
                         principalColumn: "Id",
@@ -214,14 +214,14 @@ namespace Library.Infrastructure.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     PrescriptionId = table.Column<int>(type: "int", nullable: false),
-                    MedicineTypeId = table.Column<int>(type: "int", nullable: false)
+                    MedicineId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PrescriptionMedicine", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PrescriptionMedicine_Medicine_MedicineTypeId",
-                        column: x => x.MedicineTypeId,
+                        name: "FK_PrescriptionMedicine_Medicine_MedicineId",
+                        column: x => x.MedicineId,
                         principalTable: "Medicine",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -234,27 +234,27 @@ namespace Library.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Radiology",
+                name: "PrescriptionRadiology",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     PrescriptionId = table.Column<int>(type: "int", nullable: false),
-                    RadiologyTypeId = table.Column<int>(type: "int", nullable: false)
+                    RadiologyId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Radiology", x => x.Id);
+                    table.PrimaryKey("PK_PrescriptionRadiology", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Radiology_Prescription_PrescriptionId",
+                        name: "FK_PrescriptionRadiology_Prescription_PrescriptionId",
                         column: x => x.PrescriptionId,
                         principalTable: "Prescription",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Radiology_RadiologyType_RadiologyTypeId",
-                        column: x => x.RadiologyTypeId,
-                        principalTable: "RadiologyType",
+                        name: "FK_PrescriptionRadiology_Radiology_RadiologyId",
+                        column: x => x.RadiologyId,
+                        principalTable: "Radiology",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -284,7 +284,7 @@ namespace Library.Infrastructure.Migrations
                 values: new object[] { 1, "13780624", "احدزاده", "عادل", "علی", "0312020244" });
 
             migrationBuilder.InsertData(
-                table: "RadiologyType",
+                table: "Radiology",
                 columns: new[] { "Id", "Name", "Price" },
                 values: new object[,]
                 {
@@ -310,16 +310,6 @@ namespace Library.Infrastructure.Migrations
                 column: "PersonId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Laboratory_LaboratoryTypeId",
-                table: "Laboratory",
-                column: "LaboratoryTypeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Laboratory_PrescriptionId",
-                table: "Laboratory",
-                column: "PrescriptionId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Prescription_DrId",
                 table: "Prescription",
                 column: "DrId");
@@ -330,9 +320,19 @@ namespace Library.Infrastructure.Migrations
                 column: "PersonId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PrescriptionMedicine_MedicineTypeId",
+                name: "IX_PrescriptionLaboratory_LaboratoryTypeId",
+                table: "PrescriptionLaboratory",
+                column: "LaboratoryTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PrescriptionLaboratory_PrescriptionId",
+                table: "PrescriptionLaboratory",
+                column: "PrescriptionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PrescriptionMedicine_MedicineId",
                 table: "PrescriptionMedicine",
-                column: "MedicineTypeId");
+                column: "MedicineId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PrescriptionMedicine_PrescriptionId",
@@ -340,14 +340,14 @@ namespace Library.Infrastructure.Migrations
                 column: "PrescriptionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Radiology_PrescriptionId",
-                table: "Radiology",
+                name: "IX_PrescriptionRadiology_PrescriptionId",
+                table: "PrescriptionRadiology",
                 column: "PrescriptionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Radiology_RadiologyTypeId",
-                table: "Radiology",
-                column: "RadiologyTypeId");
+                name: "IX_PrescriptionRadiology_RadiologyId",
+                table: "PrescriptionRadiology",
+                column: "RadiologyId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -356,25 +356,25 @@ namespace Library.Infrastructure.Migrations
                 name: "Insurance");
 
             migrationBuilder.DropTable(
-                name: "Laboratory");
+                name: "LoginAccess");
 
             migrationBuilder.DropTable(
-                name: "LoginAccess");
+                name: "PrescriptionLaboratory");
 
             migrationBuilder.DropTable(
                 name: "PrescriptionMedicine");
 
             migrationBuilder.DropTable(
-                name: "Radiology");
+                name: "PrescriptionRadiology");
 
             migrationBuilder.DropTable(
                 name: "InsuranceType");
 
             migrationBuilder.DropTable(
-                name: "LaboratoryType");
+                name: "User");
 
             migrationBuilder.DropTable(
-                name: "User");
+                name: "Laboratory");
 
             migrationBuilder.DropTable(
                 name: "Medicine");
@@ -383,7 +383,7 @@ namespace Library.Infrastructure.Migrations
                 name: "Prescription");
 
             migrationBuilder.DropTable(
-                name: "RadiologyType");
+                name: "Radiology");
 
             migrationBuilder.DropTable(
                 name: "Doctor");
