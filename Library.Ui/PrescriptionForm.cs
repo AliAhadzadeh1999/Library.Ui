@@ -12,40 +12,39 @@ namespace Library.Ui
     {
         private readonly IPersonService personService;
         private readonly IInsuranceService insuranceService;
-        private readonly IMedicineTypeService medicineTypeService;
+        private readonly IMedicineService medicineService;
         private readonly IRadiologyTypeService radiologyTypeService;
         private readonly IPrescriptionService prescriptionService;
-        private readonly IMedicineService medicineService;
         private readonly IRadiologyService radiologyService;
-        
+        private Person? person;
+        private List<Medicine>? selectedMedicines = new();
 
 
         public PrescriptionForm()
         {
             personService = new PersonService();
             insuranceService = new InsuranceService();
-            medicineTypeService = new MedicineTypeService();
+            medicineService = new MedicineService();
             radiologyTypeService = new RadiologyTypeService();
             prescriptionService = new PrescriptionService();
-            medicineService = new MedicineService();
             radiologyService = new RadiologyService();
             InitializeComponent();
+            FillComboBoxMedicine();
+            txtNationalCode.Text = "0312020244";
         }
 
         private void FillInformationGB()
         {
             InsuranceInfo(PersonInfo());
-            FillComboBoxMedicine();
             FillComboBoxRadiology();
         }
 
         private void FillComboBoxMedicine()
         {
-            var medicineNames = medicineTypeService.GetAll();
-            foreach (var item in medicineNames)
-            {
-                comboMedicine.Items.Add(item.Name);
-            }
+            var medicines = medicineService.GetAll();
+            comboMedicine.DataSource = medicines;
+            comboMedicine.ValueMember = "Id";
+            comboMedicine.DisplayMember = "Name";
         }
         private void FillComboBoxRadiology()
         {
@@ -65,25 +64,32 @@ namespace Library.Ui
 
         private Person PersonInfo()
         {
-            var personInfo = personService.GetById(nationalCodeTxt2.Text);
-            nameTxt.Text = personInfo.Name;
-            familyTxt.Text = personInfo.Family;
-            fatherNameTxt.Text = personInfo.FatherName;
-            nationalCodeTxt.Text = personInfo.NationalId?.ToString();
-            return personInfo;
+            person = personService.GetById(txtNationalCode.Text);
+            if (person is not null)
+            {
+                nameTxt.Text = person.Name;
+                familyTxt.Text = person.Family;
+                fatherNameTxt.Text = person.FatherName;
+                lblNationalCode.Text = person.NationalId?.ToString();
+            }
+
+            return person;
         }
 
         private void SearchByNationalCode(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(nationalCodeTxt2.Text))
+            if (string.IsNullOrEmpty(txtNationalCode.Text))
             {
-                FillInformationGB();
+                MessageBox.Show("Error");
+                return;
+                //FillInformationGB();
             }
-            nationalCodeTxt2.Clear();
+            person = PersonInfo();
+            //nationalCodeTxt2.Clear();
         }
         private void addRadiologyBtn_Click(object sender, EventArgs e)
         {
-            var personInfo = personService.GetById(nationalCodeTxt2.Text);
+            var personInfo = personService.GetById(txtNationalCode.Text);
             var listRadiologyName = radiologyService.GetKeyValues();
 
             var radiologyKeyValue = new List<KeyValue>();
@@ -123,57 +129,45 @@ namespace Library.Ui
 
         private void AddMedicineBtn_Click(object sender, EventArgs e)
         {
-            var personInfo = personService.GetById(nationalCodeTxt2.Text);
-            var listMedicineNames = medicineService.GetKeyValue();
-
-            var medicineKeyValue = new List<KeyValue>();
-            List<int> result = new List<int>();
-
-            for (int i = 0; i < dataGridViewMedicine.Rows.Count; i++)
+            if (person is null)
             {
-                var data = (string)dataGridViewMedicine[0, i].Value;
-                if (listMedicineNames.Any(x => x.Value == data))
-                {
-                    medicineKeyValue.Add(listMedicineNames.FirstOrDefault(x => x.Value == data));
-                }
-
+                MessageBox.Show("Error");
+                return;
             }
 
-            foreach (var item in medicineKeyValue)
-            {
-                result.Add(item.Key);
-            }
+            var selectedMedicines = dataGridViewMedicine.DataSource as List<Medicine>;
 
-            var prescription = new PrescriptionMedicineAddDto()
+            prescriptionService.Add(new PrescriptionMedicineAddDto()
             {
                 DrId = 2,
-                PersonId = personInfo.Id,
-                Selected = result
-            };
-            prescriptionService.Add(prescription);
+                PersonId = person.Id,
+                Selected = selectedMedicines.Select(x => x.Id).ToList()
+            });
             dataGridViewMedicine.Rows.Clear();
             ClearGb();
         }
+
         private void AddMedicineToGw(object sender, EventArgs e)
         {
-            var x = comboMedicine.SelectedItem;
-
-            dataGridViewMedicine.ColumnCount = 1;
-            dataGridViewMedicine.Columns[0].Name = "Medicine";
-
-
-            dataGridViewMedicine.Rows.Add(x.ToString());
+            var selectedItem = comboMedicine.SelectedItem as Medicine;
+            if (selectedItem is not null)
+            {
+                selectedMedicines.Add(selectedItem);
+                dataGridViewMedicine.DataSource = selectedMedicines;
+                dataGridViewMedicine.Refresh();
+            }
         }
+
         private void ClearGb()
         {
             nameTxt.Text = "";
             familyTxt.Text = "";
             fatherNameTxt.Text = "";
-            nationalCodeTxt.Text = "";
+            lblNationalCode.Text = "";
             expireDateTxt.Text = "";
             insuranceType.Text = "";
         }
 
-        
+
     }
 }

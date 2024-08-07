@@ -24,12 +24,8 @@ public class PersonRepository : IPersonRepository
         throw new NotImplementedException();
     }
 
-    public Person GetById(string nationalId)
-    {
-        var person = Context.Person?.AsNoTracking().FirstOrDefault();
-        return (person);
-    }
-
+    public Person? GetById(string nationalId)=> Context.Person?.FirstOrDefault(x => x.NationalId == nationalId);
+  
     public void Update(Person person)
     {
         throw new NotImplementedException();

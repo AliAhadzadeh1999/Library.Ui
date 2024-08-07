@@ -31,11 +31,11 @@
             nationalCodeLbl = new Label();
             groupBox1 = new GroupBox();
             searchByNationalCode = new Button();
-            nationalCodeTxt2 = new TextBox();
+            txtNationalCode = new TextBox();
             timeLbl = new Label();
             groupBox2 = new GroupBox();
             expireDateTxt = new Label();
-            nationalCodeTxt = new Label();
+            lblNationalCode = new Label();
             insuranceType = new Label();
             fatherNameTxt = new Label();
             familyTxt = new Label();
@@ -78,7 +78,7 @@
             // groupBox1
             // 
             groupBox1.Controls.Add(searchByNationalCode);
-            groupBox1.Controls.Add(nationalCodeTxt2);
+            groupBox1.Controls.Add(txtNationalCode);
             groupBox1.Controls.Add(nationalCodeLbl);
             groupBox1.Location = new Point(36, 36);
             groupBox1.Name = "groupBox1";
@@ -96,12 +96,12 @@
             searchByNationalCode.UseVisualStyleBackColor = true;
             searchByNationalCode.Click += SearchByNationalCode;
             // 
-            // nationalCodeTxt2
+            // nationalCodeTxt
             // 
-            nationalCodeTxt2.Location = new Point(388, 28);
-            nationalCodeTxt2.Name = "nationalCodeTxt2";
-            nationalCodeTxt2.Size = new Size(201, 27);
-            nationalCodeTxt2.TabIndex = 1;
+            txtNationalCode.Location = new Point(388, 28);
+            txtNationalCode.Name = "nationalCodeTxt";
+            txtNationalCode.Size = new Size(201, 27);
+            txtNationalCode.TabIndex = 1;
             // 
             // timeLbl
             // 
@@ -114,7 +114,7 @@
             // groupBox2
             // 
             groupBox2.Controls.Add(expireDateTxt);
-            groupBox2.Controls.Add(nationalCodeTxt);
+            groupBox2.Controls.Add(lblNationalCode);
             groupBox2.Controls.Add(insuranceType);
             groupBox2.Controls.Add(fatherNameTxt);
             groupBox2.Controls.Add(familyTxt);
@@ -142,12 +142,12 @@
             // 
             // nationalCodeTxt
             // 
-            nationalCodeTxt.AutoSize = true;
-            nationalCodeTxt.Location = new Point(283, 76);
-            nationalCodeTxt.Name = "nationalCodeTxt";
-            nationalCodeTxt.RightToLeft = RightToLeft.Yes;
-            nationalCodeTxt.Size = new Size(0, 20);
-            nationalCodeTxt.TabIndex = 10;
+            lblNationalCode.AutoSize = true;
+            lblNationalCode.Location = new Point(283, 76);
+            lblNationalCode.Name = "nationalCodeTxt";
+            lblNationalCode.RightToLeft = RightToLeft.Yes;
+            lblNationalCode.Size = new Size(0, 20);
+            lblNationalCode.TabIndex = 10;
             // 
             // insuranceType
             // 
@@ -385,10 +385,10 @@
         private GroupBox groupBox1;
         private Label timeLbl;
         private Button searchByNationalCode;
-        private TextBox nationalCodeTxt2;
+        private TextBox txtNationalCode;
         private GroupBox groupBox2;
         private Label expireDateTxt;
-        private Label nationalCodeTxt;
+        private Label lblNationalCode;
         private Label insuranceType;
         private Label fatherNameTxt;
         private Label familyTxt;

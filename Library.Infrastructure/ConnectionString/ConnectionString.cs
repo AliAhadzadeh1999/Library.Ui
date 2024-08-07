@@ -2,5 +2,5 @@
 
 public class ConnectionString
 {
-    internal static string AdvConnectionString = "data source= . ; integrated security= true; initial catalog= InsuranceDB21";
+    internal static string AdvConnectionString = "data source=. ; integrated security= true; initial catalog= InsuranceDB21";
 }

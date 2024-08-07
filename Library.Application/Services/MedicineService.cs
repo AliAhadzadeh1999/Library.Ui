@@ -1,22 +1,24 @@
-﻿using Library.Application.Contract.DTOs;
-using Library.Application.Contract.IServices;
+﻿using Library.Application.Contract.IServices;
 using Library.Infrastructure.IRepository;
 using Library.Infrastructure.Repository;
+using Library.Model.Models;
+namespace Library.Application.Services;
 
-namespace Library.Application.Services
+public class MedicineService : IMedicineService
 {
-    public class MedicineService : IMedicineService
+    private readonly IMedicineTypeRepository medicineTypeRepository;
+
+    public MedicineService()
     {
-        private readonly IMedicineRepository medicineRepository;
-        public MedicineService()
-        {
-            medicineRepository = new MedicineRepository();
-        }
-        public List<KeyValue> GetKeyValue()
-        {
-            return medicineRepository.GetAll().OrderBy(x => x.Name)
-                .Select(x => new KeyValue { Key = x.Id, Value = x.Name })
-                .ToList();
-        }
+        medicineTypeRepository = new MedicineTypeRepository();
+    }
+    public List<Medicine> GetAll()
+    {
+        return medicineTypeRepository.GetAll();
+    }
+
+    public Medicine GetByName(string name)
+    {
+        return medicineTypeRepository.GetByName(name);
     }
 }

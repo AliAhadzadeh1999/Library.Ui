@@ -1,14 +1,10 @@
-﻿using Library.Application.Contract.DTOs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Library.Model.Models;
 
 namespace Library.Application.Contract.IServices
 {
     public interface IMedicineService
     {
-        List<KeyValue> GetKeyValue();
+        public List<Medicine> GetAll();
+        public Medicine GetByName(string name);
     }
 }
